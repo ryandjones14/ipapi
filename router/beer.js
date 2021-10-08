@@ -1,8 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 const dbo = require("../dbConn");
-const { ObjectId } = require("mongodb");
-
+const utils = require("../utils");
 const BEER = "beer";
 
 // get beer by id
@@ -26,7 +25,8 @@ routes.route("/beer/id").get(async function (req, res) {
 routes.route("/beer/name").get(async function (req, res) {
   const dbConnect = dbo.getDb();
   var name = req.body.name;
-  const query = { name };
+  const regex = new RegExp(utils.escapeRegex(name), 'gi');
+  const query = { name: regex };
 
   dbConnect
     .collection(BEER)
