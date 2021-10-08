@@ -1,19 +1,19 @@
 const express = require("express");
 const routes = express.Router();
-const dbo = require("./dbConn");
+const dbo = require("../dbConn");
 const { ObjectId } = require("mongodb");
 
 const BEER = "beer";
 
 // get beer by id
-routes.route("/beer/:id").get(async function (_req, res) {
+routes.route("/beer/id").get(async function (req, res) {
   const dbConnect = dbo.getDb();
-  var id = _req.params.id;
-  const listingQuery = { id };
+  var id = req.body.id;
+  const query = { id };
 
   dbConnect
     .collection(BEER)
-    .findOne(listingQuery, (err, result) => {
+    .findOne(query, (err, result) => {
       if (err) {
         res.status(400).send("Error fetching listings!");
       } else {
@@ -23,14 +23,14 @@ routes.route("/beer/:id").get(async function (_req, res) {
 });
 
 // get beer by name
-routes.route("/beerByName").get(async function (_req, res) {
+routes.route("/beer/name").get(async function (req, res) {
   const dbConnect = dbo.getDb();
-  var name = _req.body.name;
-  const listingQuery = { name };
+  var name = req.body.name;
+  const query = { name };
 
   dbConnect
     .collection(BEER)
-    .findOne(listingQuery, (err, result) => {
+    .findOne(query, (err, result) => {
       if (err) {
         res.status(400).send("Error fetching listings!");
       } else {
@@ -40,7 +40,7 @@ routes.route("/beerByName").get(async function (_req, res) {
 });
 
 // get all beer
-routes.route("/beer").get(async function (_req, res) {
+routes.route("/beer").get(async function (req, res) {
   const dbConnect = dbo.getDb();
 
   dbConnect
@@ -82,7 +82,7 @@ routes.route("/beer").get(async function (_req, res) {
 // // This section will help you update a record by id.
 // routes.route("/listings/updateLike").post(function (req, res) {
 //   const dbConnect = dbo.getDb();
-//   const listingQuery = { _id: req.body.id };
+//   const query = { _id: req.body.id };
 //   const updates = {
 //     $inc: {
 //       likes: 1
@@ -91,9 +91,9 @@ routes.route("/beer").get(async function (_req, res) {
 
 //   dbConnect
 //     .collection("listingsAndReviews")
-//     .updateOne(listingQuery, updates, function (err, _result) {
+//     .updateOne(query, updates, function (err, _result) {
 //       if (err) {
-//         res.status(400).send(`Error updating likes on listing with id ${listingQuery.id}!`);
+//         res.status(400).send(`Error updating likes on listing with id ${query.id}!`);
 //       } else {
 //         console.log("1 document updated");
 //       }
@@ -103,13 +103,13 @@ routes.route("/beer").get(async function (_req, res) {
 // // This section will help you delete a record.
 // routes.route("/listings/delete/:id").delete((req, res) => {
 //   const dbConnect = dbo.getDb();
-//   const listingQuery = { listing_id: req.body.id };
+//   const query = { listing_id: req.body.id };
 
 //   dbConnect
 //     .collection("listingsAndReviews")
-//     .deleteOne(listingQuery, function (err, _result) {
+//     .deleteOne(query, function (err, _result) {
 //       if (err) {
-//         res.status(400).send(`Error deleting listing with id ${listingQuery.listing_id}!`);
+//         res.status(400).send(`Error deleting listing with id ${query.listing_id}!`);
 //       } else {
 //         console.log("1 document deleted");
 //       }

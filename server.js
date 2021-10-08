@@ -8,7 +8,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(require("./routes"));
+app.use(require("./router/beer"));
+app.use(require("./router/brewery"));
 
 // Global error handling
 app.use(function (err, _req, res) {
