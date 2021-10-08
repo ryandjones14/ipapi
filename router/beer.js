@@ -39,6 +39,24 @@ routes.route("/beer/name").get(async function (req, res) {
     });
 });
 
+// get all beer by brewery id
+routes.route("/beer/brewery").get(async(req, res) => {
+  const dbConnect = dbo.getDb();
+  var breweryId = req.body.breweryId;
+  const query = { brewery_id: breweryId };
+
+  dbConnect
+    .collection(BEER)
+    .find(query)
+    .toArray((err, result) => {
+      if (err) {
+        res.status(400).send("Error fetching listings!");
+      } else {
+        res.json(result);
+      }
+    });
+});
+
 // get all beer
 routes.route("/beer").get(async function (req, res) {
   const dbConnect = dbo.getDb();
